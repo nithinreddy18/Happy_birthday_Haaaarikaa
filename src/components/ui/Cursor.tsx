@@ -1,5 +1,7 @@
+"use client"
 import React, { useEffect, useRef } from 'react';
 import { motion, useMotionValue } from 'framer-motion';
+
 
 export const Cursor: React.FC = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
