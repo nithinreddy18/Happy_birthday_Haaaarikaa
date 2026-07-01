@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
-import { Compass, Wind, Sparkles } from "lucide-react";
+import { Compass, Wind, Sparkles, ChevronDown } from "lucide-react";
 
 // Beautiful SVG butterfly template with flutter animation
 const Butterfly: React.FC<{ index: number; mouseX: any; mouseY: any }> = ({ index, mouseX, mouseY }) => {
@@ -62,8 +62,6 @@ const Butterfly: React.FC<{ index: number; mouseX: any; mouseY: any }> = ({ inde
   );
 };
 
-import { useMemo } from "react";
-
 export default function ForestPage() {
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -82,15 +80,15 @@ export default function ForestPage() {
 
   const textSections = [
     {
-      title: "The Forest of Dreams",
+      title: "The Forest of Dreams 🌲",
       content: "This path was woven from the softest dreams. As you walk through, let the whispers of the wind remind you how truly special you are.",
     },
     {
-      title: "A Heart Full of Sunshine",
-      content: "Just like the butterflies that follow the light, everyone who meets you is drawn to your warmth, your laughter, and your kind soul.",
+      title: "A Heart Full of Sunshine ☀️",
+      content: "Just like the butterflies that follow the light, everyone who meets you is drawn to your warmth, your laughter, and your kind, sparkling soul.",
     },
     {
-      title: "Blooming with Grace",
+      title: "Blooming with Grace 🌸",
       content: "May this year bring you closer to all your wishes. The forest is preparing a beautiful path for the steps ahead.",
     },
   ];
@@ -99,21 +97,32 @@ export default function ForestPage() {
     <div
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className="min-h-[250vh] w-full bg-gradient-to-b from-[#1E0914] via-[#4A1525] to-[#601932] relative overflow-hidden"
+      className="min-h-[250vh] w-full bg-gradient-to-b from-[#0f0408] via-[#240a15] to-[#3a0f21] relative overflow-hidden"
     >
+      {/* Narrative Progress Header */}
+      <div className="fixed top-6 left-6 right-6 z-40 flex justify-center pointer-events-none">
+        <div className="glass-panel px-6 py-3 rounded-full flex items-center gap-4 text-xs font-poppins tracking-wider border-white/5 shadow-lg">
+          <span className="text-pinkPrimary font-semibold glow-text">✿ Forest</span>
+          <span className="text-white/20">➔</span>
+          <span className="text-white/40">Garden</span>
+          <span className="text-white/20">➔</span>
+          <span className="text-white/40">Wish</span>
+        </div>
+      </div>
+
       {/* Stars and light beams in background */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,193,227,0.12),transparent_60%)] pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(255,215,0,0.08),transparent_50%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,143,177,0.08),transparent_60%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(212,175,55,0.04),transparent_50%)] pointer-events-none" />
 
       {/* Floating swarm of butterflies */}
-      {Array.from({ length: 15 }).map((_, i) => (
+      {Array.from({ length: 18 }).map((_, i) => (
         <Butterfly key={i} index={i} mouseX={rawMouseX} mouseY={rawMouseY} />
       ))}
 
       {/* Narrative sections */}
       <div className="max-w-3xl mx-auto px-6 py-20 flex flex-col justify-between min-h-screen">
         {/* Intro */}
-        <div className="min-h-screen flex flex-col justify-center items-center text-center">
+        <div className="min-h-screen flex flex-col justify-center items-center text-center relative">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -127,7 +136,7 @@ export default function ForestPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 1 }}
-            className="text-4xl md:text-6xl font-playfair font-bold text-white mb-6 glow-text"
+            className="text-5xl md:text-7xl font-cormorant font-bold text-white mb-6 glow-text"
           >
             The Whispering Forest
           </motion.h1>
@@ -135,27 +144,38 @@ export default function ForestPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 1 }}
-            className="text-white/60 text-sm max-w-md tracking-wider font-poppins leading-relaxed"
+            className="text-white/70 text-sm max-w-md tracking-wider font-poppins leading-relaxed mb-12"
           >
             Scroll down slowly to read the wind's message, and let the glowing butterflies guide your path...
           </motion.p>
+
+          {/* Bouncing Scroll Guide */}
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+            className="absolute bottom-10 flex flex-col items-center gap-2 cursor-pointer pointer-events-auto"
+            onClick={() => window.scrollTo({ top: window.innerHeight * 0.85, behavior: "smooth" })}
+          >
+            <span className="text-[10px] text-pinkPrimary/60 uppercase tracking-[0.2em] font-poppins">Scroll Down</span>
+            <ChevronDown className="w-5 h-5 text-pinkPrimary/80" />
+          </motion.div>
         </div>
 
         {/* Scroll cards */}
-        <div className="space-y-40 my-40">
+        <div className="space-y-48 my-40">
           {textSections.map((sec, idx) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="p-8 rounded-3xl glass-panel-dark text-center border-white/5"
+              viewport={{ once: true, amount: 0.45 }}
+              transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+              className="p-10 rounded-3xl glass-panel-dark gold-border text-center"
             >
-              <h2 className="text-2xl md:text-3xl font-playfair text-pinkPrimary glow-text font-semibold mb-4">
+              <h2 className="text-3xl md:text-4xl font-cormorant text-pinkPrimary glow-text font-bold mb-6">
                 {sec.title}
               </h2>
-              <p className="text-white/80 font-poppins text-base md:text-lg leading-relaxed max-w-xl mx-auto font-light">
+              <p className="text-white/90 font-poppins text-base md:text-lg leading-relaxed max-w-xl mx-auto font-light">
                 {sec.content}
               </p>
             </motion.div>
@@ -165,13 +185,13 @@ export default function ForestPage() {
         {/* Outro & Next Button */}
         <div className="min-h-screen flex flex-col justify-center items-center text-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="glass-panel p-8 rounded-3xl w-full max-w-lg"
+            className="glass-panel p-10 rounded-3xl w-full max-w-lg gold-border"
           >
-            <Compass className="w-10 h-10 text-gold mx-auto mb-6 animate-spin" style={{ animationDuration: "12s" }} />
-            <h3 className="text-2xl md:text-3xl font-playfair text-white mb-4">
+            <Compass className="w-12 h-12 text-gold mx-auto mb-6 animate-spin" style={{ animationDuration: "16s" }} />
+            <h3 className="text-3xl font-cormorant font-bold text-white mb-4">
               Step Into the Light
             </h3>
             <p className="text-white/70 text-sm font-poppins mb-8 leading-relaxed">
